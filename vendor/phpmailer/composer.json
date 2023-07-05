@@ -1,0 +1,17 @@
+{
+    "name": "lenovo/cms",
+    "require": {
+        "phpmailer/phpmailer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lenovo\\Cms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vikas Rangadia",
+            "email": "rangadiavikas06@gmail.com"
+        }
+    ]
+}
