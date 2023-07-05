@@ -43,9 +43,11 @@
 
    if (isset($_GET['edit'])) {
    $cat_id = $_GET['edit'];
+
+   include "includes1/update_cat.php";
    }
                      
-   include "includes1/update_cat.php"; 
+   
    ?>                                              
  </div>
 

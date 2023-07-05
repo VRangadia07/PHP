@@ -11,7 +11,7 @@
         $body = $_POST['body'];
         $header = "From: " . $_POST['email'];
 
-        mail($to, $subject, $body, $header);
+       // mail($to, $subject, $body, $header);
 
         }
     

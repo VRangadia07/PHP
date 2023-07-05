@@ -1,37 +1,38 @@
 <?php include "includes1/header.php" ?>    
     
     
-<div id="wrapper">
+    
+    <div id="wrapper">
 
- 
-<!-- Navigation -->
+    
 
-<?php include "includes1/navigation.php" ?>
+
+    <!-- Navigation -->
+
+    <?php include "includes1/navigation.php" ?>
         
-    <div id="page-wrapper">
+        <div id="page-wrapper">
 
-     <div class="container-fluid">
+            <div class="container-fluid">
 
-        <!-- Page Heading -->
-      <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-            Welcome to Admin <?php echo $_SESSION['username'] ?>
-            </h1>
-                        
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                        Welcome to Dashboard Admin <small><?php echo $_SESSION['username'] ?></small> 
+                        </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
             
-        </div>
-    </div>
-    <!-- /.row -->
-
-                       
-    <!-- /.row -->
+                      
+                <!-- /.row -->
                 
 <div class="row">
-    <div class="col-xl-3 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-              <div class="row">
+                <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-file-text fa-5x"></i>
                     </div>
@@ -52,7 +53,7 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
@@ -67,7 +68,6 @@
                     </div>
                 </div>
             </div>
-   
             <a href="comments.php">
                 <div class="panel-footer">
                     <span class="pull-left">View Details</span>
@@ -77,7 +77,7 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <div class="row">
@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
 
-                <div class='huge'><?php echo $users_counts = recordCount('users1'); ?></div> 
+        <div class='huge'><?php echo $users_counts = recordCount('users1'); ?></div> 
 
                         <div> Users</div>
                     </div>
@@ -101,7 +101,7 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="panel panel-red">
             <div class="panel-heading">
                 <div class="row">
@@ -126,7 +126,7 @@
         </div>
     </div>
 </div>
-     <!-- /.row -->
+                <!-- /.row -->
 
 <?php 
 
@@ -141,32 +141,32 @@ $subscriber_counts = checkUserRole('users1', 'user_role', 'subscriber');
 
 ?>     
 
-<!-- 
-   <div class="row">
+
+    <div class="row">
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+    function drawChart() {
         var data = google.visualization.arrayToDataTable([
-        ['Data', 'Count'],
+          ['Data', 'Count'],
 
-        <?php 
+    <?php 
         
-        //$element_array = ["All Posts", "Active Posts", "Draft Posts", "Comments", "Pending Comments", "Users",  "Subscribers", "Categories"];
-       // $element_count = [$post_counts, $published_post_counts , $draft_post_counts , $comments_counts, $unapproved_counts ,  $users_counts, $subscriber_counts, $categories_counts];
+        $element_array = ["All Posts", "Active Posts", "Draft Posts", "Comments", "Pending Comments", "Users",  "Subscribers", "Categories"];
+        $element_count = [$post_counts, $published_post_counts , $draft_post_counts , $comments_counts, $unapproved_counts ,  $users_counts, $subscriber_counts, $categories_counts];
 
-       // for ($i=0; $i < 8; $i++) { 
+        for ($i=0; $i < 8; $i++) { 
             
-           // echo "['{$element_array[$i]}'" . "," . "{$element_count[$i]}],";
-       // }
+            echo "['{$element_array[$i]}'" . "," . "{$element_count[$i]}],";
+        }
         
-        ?>
+    ?>
 
 
-        //  ['Posts', 15],
+    //   ['Posts', 15],
         ]);
-        
+
         var options = {
           chart: {
           title: '',
@@ -177,11 +177,11 @@ $subscriber_counts = checkUserRole('users1', 'user_role', 'subscriber');
         var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
 
         chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script> -->
-<!-- 
-<div id="columnchart_material" style="width: 'auto'; height: 300px;"></div>
-        </div> -->
+    }
+    </script>
+
+ <div id="columnchart_material" style="width: 'auto'; height: 500px;"></div>
+        </div>
         
 
         </div>
@@ -189,4 +189,5 @@ $subscriber_counts = checkUserRole('users1', 'user_role', 'subscriber');
 
         </div>
         <!-- /#page-wrapper -->
-<?php include "includes1/footer.php" ?>
+
+ <?php include "includes1/footer.php" ?>

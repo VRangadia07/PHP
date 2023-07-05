@@ -72,8 +72,7 @@
 
 
 ?>
-                
-            
+      
  </tbody>
 </table>
  <?php 
@@ -88,18 +87,15 @@
     }
 
       
-    if (isset($_GET['change_to_sub'])) {
+  if (isset($_GET['change_to_sub'])) {
 
-        $the_user_id = $_GET['change_to_sub'];
-
-        $query = "UPDATE users1 SET user_role = 'subscriber' WHERE user_id = $the_user_id ";
-        $change_sub_q = mysqli_query($connection, $query);
-        header("Location: users.php" );
+    $the_user_id = $_GET['change_to_sub'];
+    $query = "UPDATE users1 SET user_role = 'subscriber' WHERE user_id = $the_user_id ";
+    $change_sub_q = mysqli_query($connection, $query);
+    header("Location: users.php" );
         
-      }
-        
- 
-
+  }
+    
 if (isset($_GET['delete'])) {
 
     if (isset($_SESSION['user_role'])) {
@@ -122,6 +118,6 @@ $post_id = $_GET['p_id'];
 
  }
                  
-include "edit_post1.php"; 
+//include "edit_post1.php"; 
 ?>  
    

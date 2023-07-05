@@ -134,7 +134,7 @@ $post_id = $_GET['p_id'];
 
  }
                  
-include "edit_post1.php"; 
+//include "edit_post1.php"; 
 ?>  
 <script>
     $(document).ready(function() {

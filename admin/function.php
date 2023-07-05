@@ -20,7 +20,16 @@
 
 function query($query){
     global $connection;
-    return mysqli_query($connection, $query);
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+   return $result;
+}
+function fetchRecords($result){
+    return mysqli_fetch_array($result);
+}
+
+function count_records($result){
+    return mysqli_num_rows($result);
 }
 
 
@@ -59,6 +68,7 @@ function userLikedThisPost($post_id){
     return mysqli_num_rows($result) >= 1 ? true : false;
 }
 
+
 function checkIfUserIsLoggedInAndRedirect($redirectLocation=null){
     if(isLoggedIn()){
         redirect($redirectLocation);
@@ -73,6 +83,8 @@ function getPostlikes($post_id){
     echo mysqli_num_rows($result);
 
 }
+
+
 
 function users_online(){
 
@@ -145,7 +157,7 @@ function findAllCategories(){
     $query = "SELECT * FROM categories1";
     $select_category = mysqli_query($connection, $query);
 
-     while ($row = mysqli_fetch_assoc($select_category)) {
+    while ($row = mysqli_fetch_assoc($select_category)) {
     $cat_id = $row['cat_id'];
     $cat_title = $row['cat_title'];
 
@@ -260,6 +272,14 @@ function findAllPosts(){
    return mysqli_real_escape_string($connection, trim($string));
 }
 
+function get_all_user_posts(){
+
+    return query("SELECT * FROM posts1 WHERE user_id=" . loggedInUserId() ."" );
+}
+function get_all_user_comments(){
+    return query("SELECT * FROM posts1 INNER JOIN comments1 ON posts1.post_id = comments1.comment_post_id WHERE user_id=" . loggedInUserId() ."" );
+}
+
 function recordCount($table)
 {
     global $connection;
@@ -294,21 +314,20 @@ function checkUserRole($table, $column, $role){
 
 }
 
-function is_admin($username){
+function is_admin(){
     global $connection;
-
-    $query = "SELECT user_role FROM users1 WHERE username = '$username' ";
-    $result = mysqli_query($connection, $query);
-    confirmQuery($result);
-
-    $row = mysqli_fetch_array($result);
-
+   if (isLoggedIN()) {
+    $result = query("SELECT user_role FROM users1 WHERE user_id=".$_SESSION['user_id']."");
+    $row = fetchRecords($result);
+   
     if ($row['user_role'] == 'admin') {
         return true;
     }else {
         return false;
     }
-
+   }
+    
+   return false;
 }
 
 function username_exists($username){
@@ -392,7 +411,7 @@ function login_user($username, $password){
     if (!$select_query) {
         die("Fail Query" . mysqli_error($connection));
     }
-
+  
     while ($row = mysqli_fetch_array($select_query)) {
       $db_user_id = $row['user_id'];
       $db_username = $row['username'];
@@ -400,9 +419,9 @@ function login_user($username, $password){
       $db_user_firstname = $row['user_firstname'];
       $db_user_lastname = $row['user_lastname'];
       $db_user_role = $row['user_role'];
-
-      if ($username === $db_username && $password === $db_user_password) {
-    
+    }
+      if ($username == $db_username && $password == $db_user_password) {
+        $_SESSION['user_id'] = $db_user_id;
         $_SESSION['username'] = $db_username;
         $_SESSION['firstname'] = $db_user_firstname;
         $_SESSION['lastname'] = $db_user_lastname;
@@ -410,14 +429,18 @@ function login_user($username, $password){
         
         header("Location: ../admin ");
         }
+     elseif ($username !== $db_username && $password !== $db_user_password) {
+            
+                header("Location: /cms/index.php");
+            }
     else {
-        return false;
+        header("Location: /cms/index.php");
     } 
-    }
+    
    
   // $p_password = crypt($password, $db_user_password);
 
-   return true;
+
 }
 
 ?>

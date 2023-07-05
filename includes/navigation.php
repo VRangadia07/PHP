@@ -48,7 +48,7 @@
 <!-- <a href='/CMS/category/$cat_id'>{$cat_title}</a>
 <a href='/cms/category.php?category={$cat_id}'>{$cat_title}</a>
 RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L] -->
-
+    
     <li>
     <a href="/CMS/admin">Admin</a>
     </li>
@@ -59,6 +59,7 @@ RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L] -->
     <li>
     <a href="/CMS/contact">Contact Us</a>
     </li>
+    
 <?php 
     if (isset($_SESSION['user_role'])) {
                 

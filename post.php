@@ -1,19 +1,19 @@
 <?php include "includes/db1.php" ?>
-<?Php include "includes/header.php" ?>
+<?php include "includes/header.php" ?>
 <?php require_once ("admin/function.php"); ?>
 
     <!-- Navigation -->
 
-    <?php include "includes/navigation.php" ?>
+<?php include "includes/navigation.php" ?>
 
 <?php
 
-if(isset($_POST['liked'])) {
+if(isset($_POST['liked'])) { 
 
     $post_id = $_POST['post_id'];
     $user_id = $_POST['user_id'];
 
-     //1 =  FETCHING THE RIGHT POST
+    // 1 =  FETCHING THE RIGHT POST     
 
     $query = "SELECT * FROM posts1 WHERE post_id=$post_id";
     $postResult = mysqli_query($connection, $query);
@@ -24,14 +24,13 @@ if(isset($_POST['liked'])) {
 
     mysqli_query($connection, "UPDATE posts1 SET likes=$likes+1 WHERE post_id=$post_id");
 
-    // 3 = CREATE LIKES FOR POST
+    // 3 = CREATE LIKES FOR POST 
 
     mysqli_query($connection, "INSERT INTO likes(user_id, post_id) VALUES($user_id, $post_id)");
     exit();
 
 
 }
-
 
 
 if(isset($_POST['unliked'])) {
@@ -46,11 +45,11 @@ if(isset($_POST['unliked'])) {
     $post = mysqli_fetch_array($postResult);
     $likes = $post['likes'];
 
-    //2 = DELETE LIKES
+    //2 = DELETE LIKES 
 
     mysqli_query($connection, "DELETE FROM likes WHERE post_id=$post_id AND user_id=$user_id");
 
-
+   
     //3 = UPDATE WITH DECREMENTING WITH LIKES
 
     mysqli_query($connection, "UPDATE posts1 SET likes=$likes-1 WHERE post_id=$post_id");
@@ -60,13 +59,9 @@ if(isset($_POST['unliked'])) {
 
 }
 
-
-
-?>   
-    
-
-
-    <!-- Page Content -->
+?>
+     
+<!-- Page Content -->
 
     <div class="container">
 
@@ -75,7 +70,7 @@ if(isset($_POST['unliked'])) {
     <!-- Blog Entries Column -->
     <div class="col-md-8">
 <?php 
-
+  
     if (isset($_GET['p_id'])) {
         $post_id = $_GET['p_id'];
 
@@ -86,14 +81,14 @@ if(isset($_POST['unliked'])) {
         die("Query fail");
         }
         
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin')  {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
         $query = "SELECT * FROM posts1 WHERE post_id = $post_id ";
         }
     else {
         $query = "SELECT * FROM posts1 WHERE post_id = $post_id AND post_status = 'published' ";
         }
         
-          
+         
     $select_apt = mysqli_query($connection,$query);
 
     if (mysqli_num_rows($select_apt) < 1) {
@@ -113,12 +108,12 @@ if(isset($_POST['unliked'])) {
             
     ?>
     <h1 class="page-header">
-            Post
-        </h1>
-
-        <!-- First Blog Post -->
+        Post
+     </h1>
+   
+   <!-- First Blog Post -->
         <h2>
-            <a href="#"><?Php echo $post_title ?></a>
+            <a href="#"><?php echo $post_title ?></a>
         </h2>
         <p class="lead">
             by <a href="index.php"><?php echo $post_author ?></a>
@@ -139,76 +134,65 @@ if(isset($_POST['unliked'])) {
 
 
     ?>
-
+<!-- 
     <div class="row">
-    <p class="pull-right"><a class="<?php echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>"
+    <p class="pull-right"><a class="<?php //echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>"
         href=""><span class="glyphicon glyphicon-thumbs-up"
         data-toggle="tooltip"
         data-placement="top"
-        title="<?php echo userLikedThisPost($post_id) ? ' I liked this before' : 'Want to like it?'; ?>"></span>
-        <?php echo userLikedThisPost($post_id) ? ' Unlike' : ' Like'; ?>
+        title="<?php //echo userLikedThisPost($post_id) ? ' I liked this before' : 'Want to like it?'; ?>"></span>
+        <?php //echo userLikedThisPost($post_id) ? ' Unlike' : ' Like'; ?>
        </a></p>
     </div>
-
-                    
+  
     <div class="row">
-    <p class="pull-right likes">Like: <?php getPostlikes($post_id); ?></p>
+    <p class="pull-right likes">Like: <?php //getPostlikes($post_id); ?></p>
+    </div> -->
+
+   <div class="clearfix">
+
+    <div class="row">
+        <p class="pull-right"><a href="" class="<?php echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>"><span class="glyphicon glyphicon-thumbs-up"></span><?php echo userLikedThisPost($post_id) ? ' Unlike ' : ' Like '; ?></a></p>
     </div>
-
-    <div class="clearfix"></div>
-
-
-      
-
-         <!-- <div class="row">
-        <p class="pull-right"><a href="" class="<?php //echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>"><span class="glyphicon glyphicon-thumbs-up"></span><?php //echo userLikedThisPost($post_id) ? ' Unlike ' : ' Like '; ?></a></p>
-        </div>
-        <div class="row">
-        <p class="pull-right">Like: 10</p>
-        </div>
-        <div class="clearfix"></div>  
-     -->
+    <div class="row">
+        <p class="pull-right"><a href="" class="<?php echo userLikedThisPost($post_id) ? 'like' : 'unlike'; ?>"><span class="glyphicon glyphicon-thumbs-down"></span><?php echo userLikedThisPost($post_id) ? ' Like ' : ' Unlike '; ?></a></p>
+    </div>
+    <div class="row">
+        <p class="pull-right">Like: <?php getPostlikes($post_id); ?> </p>
+    </div>
+     
         
         <?php }
-     
      ?>
+   </div>
+    <!-- Blog Comments -->
 
-        <!-- Blog Comments -->
+<?php 
+    if (isset($_POST['create_comment'])) {
 
-        
-    <?php 
-          if (isset($_POST['create_comment'])) {
+        $post_id = $_GET['p_id'];
+        $comment_author = $_POST['comment_author'];
+        $comment_email = $_POST['comment_email'];
+        $comment_content = $_POST['comment_content'];
 
-            $post_id = $_GET['p_id'];
-           $comment_author = $_POST['comment_author'];
-           $comment_email = $_POST['comment_email'];
-           $comment_content = $_POST['comment_content'];
-
-           if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
+    if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
     
-            $query = "INSERT INTO comments1 (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-            $query .= "VALUES ($post_id, '$comment_author', '$comment_email', '$comment_content', 'unapproved', now())";
+        $query = "INSERT INTO comments1 (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+        $query .= "VALUES ($post_id, '$comment_author', '$comment_email', '$comment_content', 'unapproved', now())";
  
-            $create_comment_query = mysqli_query($connection,$query);
-            if (!$create_comment_query) {
-               die("Fail to Query" . mysqli_error($connection));
-               }
+    $create_comment_query = mysqli_query($connection,$query);
+    if (!$create_comment_query) {
+        die("Fail to Query" . mysqli_error($connection));
+    }
  
         //  $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
         //  $query .= "WHERE post_id = $post_id ";
         //  $update_count_comment = mysqli_query($connection,$query);
- 
-           
-           else {
-            echo "<script>alert('Filed cannot be Empty')</script>";
-           }
-        }
-     }
-        
-        
-           
     
-    ?>
+    }
+}
+        
+?>
 
 <!-- Comments Form -->
     <div class="well">
@@ -220,7 +204,7 @@ if(isset($_POST['unliked'])) {
     <input type="text" name="comment_author" class="form-control">
     </div>
 
-    <div class="form-group">
+    <div class="form-group">    
     <label for="email">Email</label>
     <input type="email" name="comment_email" class="form-control">
     </div>
@@ -237,10 +221,9 @@ if(isset($_POST['unliked'])) {
     
 <!-- Posted Comments -->
 
-      
 <?php 
 
-    $query = "SELECT * FROM comments1 WHERE comment_post_id = {$post_id} ";
+   $query = "SELECT * FROM comments1 WHERE comment_post_id = {$post_id} ";
    $query .= "AND comment_status = 'approved' ";
    $query .= "ORDER BY comment_id DESC ";
 
@@ -248,13 +231,13 @@ if(isset($_POST['unliked'])) {
    if (!$select_comment_q) {
      die("fail to query" . mysqli_error($connection));
    }
-
+   
    while ($row = mysqli_fetch_assoc($select_comment_q)) {
        $comment_date = $row['comment_date'];
        $comment_content = $row['comment_content'];
-      $comment_author = $row['comment_author'];
+       $comment_author = $row['comment_author'];
 
-      ?>
+    ?>
 
     <!-- Comment -->
     <div class="media">
@@ -272,35 +255,34 @@ if(isset($_POST['unliked'])) {
        
 <?php } }} else {
         header("Location: index.php");
-     }
+    }
 
 ?>
 
  </div>
 
-   
-            <!-- Blog Sidebar Widgets Column -->
+  <!-- Blog Sidebar Widgets Column -->
 
-            <?php include "includes/sidebar.php" ?>
+    <?php include "includes/sidebar.php" ?>
             
-        </div>
+    </div>
         <!-- /.row -->
 
         
 
-        <hr>
-
+    <hr>
+    
         <!-- Footer -->
-       <?php include "includes/footer.php" ?>
-
+<?php include "includes/footer.php" ?>
+ 
 <script>
     $(document).ready(function(){
 
     $("[data-toggle='tooltip']").tooltip();
     var post_id = <?php echo $post_id; ?>;
-    var user_id = <?php echo $user_id; ?> ;
+    var user_id = <?php //echo loggedInUserId();?> 1;
 
-    // LIKING
+    // LIKING 
 
     $('.like').click(function(){
     $.ajax({
@@ -314,8 +296,8 @@ if(isset($_POST['unliked'])) {
     });
 });
 
-    // UNLIKING
-
+ // UNLIKING 
+  
     $('.unlike').click(function(){
     $.ajax({
         url: "/cms/post.php?p_id=<?php echo $post_id; ?>",
@@ -332,4 +314,3 @@ if(isset($_POST['unliked'])) {
 });
 
 </script>
-      

@@ -34,7 +34,7 @@
                 include "includes1/add_post.php";
                 break;
             case 'edit_post1':
-                include "includes1/edit_post1.php";
+                include "includes1/edit_post.php";
                 break;
 
             case '3':

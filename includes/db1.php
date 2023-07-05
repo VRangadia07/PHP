@@ -16,16 +16,22 @@
 // if ($connection) {
 //    // echo "we are connected.";
 // }
+
 ?>
 
-<?php 
+<?php
+    // include 'admin/function.php';
 
 $connection = mysqli_connect('localhost', 'root', '','cms1');
 
 if ($connection) {
 
-    //echo "we are connect";
+   //echo "we are connect";
     
 }
+//query("SET NAMES utf8"); 
+// $query = "SET NAMES utf-8 ";
+// mysqli_query($connection, $query);
+
 
 ?>

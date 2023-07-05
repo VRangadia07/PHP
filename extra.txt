@@ -229,7 +229,6 @@ if(isset($_POST['unliked'])) {
         <div class="row">
             <p class="pull-right"><a class="<?php echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>" href=""><span class="glyphicon glyphicon-thumbs-up"></span><?php echo userLikedThisPost($post_id) ? 'Unlike' : 'Like'; ?></a></p>
         </div>
-
         
 
         <div class="row">
@@ -396,3 +395,95 @@ if(isset($_POST['unliked'])) {
 });
     });
  </script>
+ ===============================================================================================================================================
+ '<p>Please click to reset your password
+
+                    <a href="http://localhost/cms/reset.php?email='.$email.'&token='.$token.' ">http://localhost/cms/reset.php?email='.$email.'&token='.$token.'</a>
+
+
+
+                    </p>';
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         $username = $_POST['username']; 
+         $password = $_POST['password'];
+    
+         $username = mysqli_real_escape_string($connection, $username);
+        $password = mysqli_real_escape_string($connection, $password);
+    
+        $query = "SELECT * FROM users1 WHERE username = '{$username}' ";
+        $select_query = mysqli_query($connection, $query);
+    
+         if (!$select_query) {
+             die("Fail Query" . mysqli_error($connection));
+         }
+    
+        while ($row = mysqli_fetch_array($select_query)) {
+           $db_user_id = $row['user_id'];
+           $db_username = $row['username'];
+           $db_user_password = $row['user_password'];
+           $db_user_firstname = $row['user_firstname'];
+          $db_user_lastname = $row['user_lastname'];
+          $db_user_role = $row['user_role'];
+         }
+         if ($username !== $db_username && $password !== $db_user_password) {
+            
+            header("Location: ../index.php");
+         }
+         elseif ($username == $db_username && $password == $db_user_password) {
+             //$_SESSION['user_id'] = $db_user_id;
+             $_SESSION['username'] = $db_username;
+             $_SESSION['firstname'] = $db_user_firstname;
+            $_SESSION['lastname'] = $db_user_lastname;
+             $_SESSION['user_role'] = $db_user_role;
+
+                header("Location: ../admin");
+             }
+         else {
+             header("Location: ../index.php");
+         } 
+
+
+////////////////////////////////////////////////////////////////////////////////////////............................
+
+<?php if($count > 1) {?> 
+    <li><a href="?page=<?php echo ($count-1) ?>">Previous</a></li><?php }  ?>
+
+//./././././././././././././///////////////////////////.........................................//////////////////////////////////////////...................................
+<!-- 
+    <div class="row">
+    <p class="pull-right"><a class="<?php //echo userLikedThisPost($post_id) ? 'unlike' : 'like'; ?>"
+        href=""><span class="glyphicon glyphicon-thumbs-down" 
+        data-toggle="tooltip"
+        data-placement="top"
+        title="<?php //echo userLikedThisPost($post_id) ? ' I unliked this before' : 'Want to unlike it?'; ?>"></span>
+        <?php //echo userLikedThisPost($post_id) ? ' Like' : ' Unlike'; ?>
+        </a></p>
+     </div> -->
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////......................................................................./////////??????????????/////
+it is in profile.
+<!--     
+    <div class="form-group">
+    <label for="post_category">User Role</label><br>
+        <select name="user_role" id="">
+           <option value="subscriber"><?php //echo $user_role; ?></option>
+
+           <?php 
+        //    if ($user_role == 'admin') {
+            
+        //   echo "<option value='subscriber'>subscriber</option>";
+        //    } 
+        //    else {
+            
+        //       echo "<option value='admin'>admin</option>";
+        //    }
+           
+        
+           ?>
+           
+           
+        </select>
+    </div> -->
+
+    
+
+    

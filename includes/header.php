@@ -31,6 +31,10 @@
     a.like{
         font-size: 18px !important;
     }
+    a.unlike{
+        font-size: 18px !important;
+    }
+    
 </style>
 
 <body>

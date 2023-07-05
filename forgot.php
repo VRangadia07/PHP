@@ -1,9 +1,13 @@
+<?php use PHPMailer\PHPMailer\PHPMailer ; ?>
 <?php  include "includes/db1.php"; ?>
 <?php  include "includes/header.php"; ?>
 <?php require_once ('admin/function.php'); ?>
 
 <?php 
-     //require './vendor/autoload.php';
+    require './vendor/autoload.php';
+    require './classes/Config.php';
+
+     
      
     if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
         redirect('/cms/index.php');
@@ -12,74 +16,65 @@
 
     if(isset($_POST['email'])) {
 
-     $email = $_POST['email'];
-     $length = 50;
-     $token = bin2hex(openssl_random_pseudo_bytes($length));
+    $email = $_POST['email'];
+    $length = 50;
+    $token = bin2hex(openssl_random_pseudo_bytes($length));
 
     if(email_exists($email)){
 
         
-    if($stmt = mysqli_prepare($connection, "UPDATE users SET token='{$token}' WHERE user_email= ?")){
+    if($stmt = mysqli_prepare($connection, "UPDATE users1 SET token='{$token}' WHERE user_email= ?")){
 
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+      mysqli_stmt_bind_param($stmt, "s", $email);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
 
-         /**
-                     *
-                     * configure PHPMailer
-                     *
-                     *
-                     */
+      /**
+          *
+          * configure PHPMailer
+          *
+          *
+      */
 
-                    // $mail = new PHPMailer();
+      $mail = new PHPMailer();
 
-                    // $mail->isSMTP();
-                    // $mail->Host = Config::SMTP_HOST;
-                    // $mail->Username = Config::SMTP_USER;
-                    // $mail->Password = Config::SMTP_PASSWORD;
-                    // $mail->Port = Config::SMTP_PORT;
-                    // $mail->SMTPSecure = 'tls';
-                    // $mail->SMTPAuth = true;
-                    // $mail->isHTML(true);
-                    // $mail->CharSet = 'UTF-8';
-
-
-                    // $mail->setFrom('edwin@codingfaculty.com', 'Edwin Diaz');
-                    // $mail->addAddress($email);
-
-                    // $mail->Subject = 'This is a test email';
-
-                    // $mail->Body = '<p>Please click to reset your password
-
-                    // <a href="http://localhost:8888/cms/reset.php?email='.$email.'&token='.$token.' ">http://localhost:888/cms/reset.php?email='.$email.'&token='.$token.'</a>
+      $mail->isSMTP();
+      $mail->Host = Config::SMTP_HOST;
+      $mail->Username = Config::SMTP_USER;
+      $mail->Password = Config::SMTP_PASSWORD;
+      $mail->Port = Config::SMTP_PORT;
+      $mail->SMTPSecure = 'tls';
+      $mail->SMTPAuth = true;
+      $mail->isHTML(true);
+      $mail->CharSet = 'UTF-8';
 
 
+      $mail->setFrom('rangadiavikas06@gmail.com', 'vikas rangadia');
+      $mail->addAddress($email);
 
-                    // </p>';
+      $mail->Subject = 'This is a Reset Password email';
+
+      $mail->Body = '<p>Please click to reset your password
+
+      <a href="http://localhost/cms/reset.php?email='.$email.'&token='.$token.' ">http://localhost/cms/reset.php?email='.$email.'&token='.$token.'</a>
+      </p>';
 
 
-                    // if($mail->send()){
+    if($mail->send()){
 
-                    //     $emailSent = true;
+      $emailSent = true;
 
-                    // } else{
+    } else{
 
-                    //     echo "NOT SENT";
-
-                    // }
-
+      echo "NOT SENT";
     }
-    
+     }
     }
-    
+  }
 }
-    
-}
-
 
 ?>
-
+ 
 
 
 <!-- Page Content -->
@@ -93,6 +88,7 @@
     <div class="panel-body">
     <div class="text-center">
 
+<?php if(!isset($emailSent)): ?>
 
     <h3><i class="fa fa-lock fa-4x"></i></h3>
     <h2 class="text-center">Forgot Password?</h2>
@@ -117,7 +113,11 @@
     </div>
     <!-- Body-->
 
-     <h3>Please check your email</h3> 
+    <?php else: ?>
+
+    <h3>Please check your email</h3> 
+
+    <?php endif; ?>
 
         </div>
      </div>
